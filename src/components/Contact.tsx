@@ -70,12 +70,39 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    await new Promise((r) => setTimeout(r, 1800));
-    setStatus('sent');
-    setTimeout(() => {
-      setStatus('idle');
-      setForm({ name: '', email: '', subject: '', message: '' });
-    }, 4000);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: '703bcaec-11af-4b27-a5bd-d3cb348b4ef2', 
+          name: form.name,
+          email: form.email,
+          subject: form.subject,
+          message: form.message,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus('sent');
+        setTimeout(() => {
+          setStatus('idle');
+          setForm({ name: '', email: '', subject: '', message: '' });
+        }, 4000);
+      } else {
+        console.error('Submission failed', result);
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error('Network error', error);
+      setStatus('error');
+    }
   };
 
   const inputBase = `w-full bg-white/3 border rounded-xl px-4 py-3.5 text-slate-200 text-sm font-inter placeholder-slate-600 outline-none transition-all duration-300`;
@@ -181,6 +208,20 @@ export default function Contact() {
                   </div>
                   <h4 className="text-green-400 font-bold text-xl mb-2">Message Sent!</h4>
                   <p className="text-slate-500 font-inter">Thanks for reaching out. I'll get back to you soon!</p>
+                </div>
+              ) : status === 'error' ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="w-16 h-16 rounded-full bg-red-900/30 border border-red-700/40 flex items-center justify-center text-3xl mb-4">
+                    ❌
+                  </div>
+                  <h4 className="text-red-400 font-bold text-xl mb-2">Something went wrong</h4>
+                  <p className="text-slate-500 font-inter mb-4">Please try again or email me directly.</p>
+                  <button 
+                    onClick={() => setStatus('idle')}
+                    className="text-purple-400 text-sm hover:text-purple-300 transition-colors"
+                  >
+                    Try Again
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
