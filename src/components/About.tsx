@@ -1,8 +1,8 @@
 const stats = [
-  { value: '2+', label: 'Years Experience', icon: '💼' },
+  { value: '6+', label: 'Years Experience', icon: '💼' },
   { value: '10+', label: 'Technologies', icon: '⚡' },
   { value: '6+', label: 'Certifications', icon: '🏆' },
-  { value: '1', label: 'Major Project', icon: '🚀' },
+  { value: '4+', label: 'Major Project', icon: '🚀' },
 ];
 
 export default function About() {
