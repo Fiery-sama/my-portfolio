@@ -2,7 +2,7 @@ const education = [
   {
     degree: 'Master of Computer Applications (MCA)',
     institution: 'Indira Gandhi National Open University (IGNOU)',
-    period: '08/2023 – Present',
+    period: '08/2023 – 07/2025',
     location: 'Delhi, India',
     color: 'purple',
     icon: '🎓',
